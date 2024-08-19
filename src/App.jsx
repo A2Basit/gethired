@@ -4,10 +4,12 @@ import Register from "./pages/register";
 import Login from "./pages/login";
 import AuthRoute from "./components/AuthRoute";
 import Home from "./pages/Home";
+import NavBar from "./components/NavBar";
 
 const App = () => {
   return (
     <>
+      <NavBar />
       <Container
         className="d-flex align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}>

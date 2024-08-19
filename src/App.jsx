@@ -5,6 +5,7 @@ import Login from "./pages/login";
 import AuthRoute from "./components/AuthRoute";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
+import PasswordReset from "./pages/PasswordReset";
 
 const App = () => {
   return (
@@ -21,6 +22,8 @@ const App = () => {
             </Route>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/PasswordReset" element={<PasswordReset />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </div>
       </Container>

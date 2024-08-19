@@ -46,6 +46,10 @@ const Login = () => {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
+            {/* forgort password */}
+            <div className="text-end">
+              <Link to="/forgotPassword">Forgot Password?</Link>
+            </div>
             {errorMsg && (
               <Alert
                 variant="danger"

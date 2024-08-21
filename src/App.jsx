@@ -5,7 +5,9 @@ import Login from "./pages/login";
 import AuthRoute from "./components/AuthRoute";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
-
+import PasswordReset from "./pages/PasswordReset";
+import UpdatePassword from "./pages/UpdatePassword";
+import GuestRoute from "./components/GuestRoute";
 const App = () => {
   return (
     <>
@@ -15,12 +17,20 @@ const App = () => {
         style={{ minHeight: "100vh" }}>
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <Routes>
+            
             <Route element={<AuthRoute />}>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
             </Route>
+            <Route element={<GuestRoute />}>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/PasswordReset" element={<PasswordReset />} />
+            <Route path="/UpdatePassword" element={<UpdatePassword />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </div>
       </Container>

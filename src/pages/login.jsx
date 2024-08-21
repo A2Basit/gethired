@@ -48,7 +48,7 @@ const Login = () => {
             </Form.Group>
             {/* forgort password */}
             <div className="text-end">
-              <Link to="/forgotPassword">Forgot Password?</Link>
+              <Link to="/PasswordReset">Forgot Password?</Link>
             </div>
             {errorMsg && (
               <Alert

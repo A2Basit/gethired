@@ -2,9 +2,11 @@ import { useAuth } from "../context/AuthProvider";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const AuthRoute = () => {
-  const { user } = useAuth();
+  const { user,loading } = useAuth();
   const location = useLocation();
-
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return user ? (
     <Outlet />
   ) : (

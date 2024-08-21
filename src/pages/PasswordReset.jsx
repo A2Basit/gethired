@@ -8,23 +8,29 @@ const PasswordReset = () => {
   const emailRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { data, error } = await passwordReset(emailRef.current.value);
-      if (!error && data) {
+      setMsg(""); // Clear any previous message
+      const { error } = await passwordReset(emailRef.current.value);
+      if (error) {
+        setMsg("Failed to send reset link");
+      } else {
         setMsg("Check your email to reset password");
       }
-    } catch {
-      console.log("Error in reseting password");
+    } catch (error) {
+      setMsg("Error in resetting password");
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Login</h2>
+          <h2 className="text-center mb-4">Reset Password</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>

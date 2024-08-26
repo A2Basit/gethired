@@ -1,10 +1,15 @@
 import React from "react";
-import { useAuth } from "../context/AuthProvider";
-
+import Hero from "../components/Hero";
+import FeaturedJobs from "../components/featuredJobs";
+import Footer from "../components/footer";
 const Home = () => {
-  const { user } = useAuth();
-
-  return <div>You are logged in and your email address is {user.email}</div>;
+  return (
+    <>
+      <Hero />
+      <FeaturedJobs />
+      <Footer />
+    </>
+  );
 };
 
 export default Home;

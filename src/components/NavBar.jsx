@@ -1,59 +1,118 @@
-import { Button } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import { Link } from "react-router-dom";
+// Navbar.jsx
 import { useAuth } from "../context/AuthProvider";
+import companylogo from "../assets/images/companylogo.png";
+import Button from "./Buttons";
+import { useState } from "react";
 
 const NavBar = () => {
-  const { auth, signOut,loading } = useAuth();
+  const { user, signOut, loading } = useAuth();
+  const [openNavigation, setOpenNavigation] = useState(false);
 
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
       const { error } = await signOut();
-      console.log(error);
+      if (error) {
+        console.error("Sign out error:", error.message);
+      } else {
+        console.log("Sign out successful");
+      }
     } catch (error) {
-      console.log(error);
-    }
-    if(loading){
-        return <div>Loading...</div>
+      console.error("Unexpected error during sign out:", error);
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container>
-        <Navbar.Brand>UserAuth</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            {!auth && (
-              <Nav.Link as={Link} to="/login">
-                Login
-              </Nav.Link>
-            )}
-            {!auth && (
-              <Nav.Link as={Link} to="/register">
-                Register
-              </Nav.Link>
-            )}
-            {auth && (
-              <Nav.Link as={Link} to="/">
-                Home
-              </Nav.Link>
-            )}
-          </Nav>
-          <Nav>
-            {auth && (
-              <Nav.Link as={Button} onClick={handleLogout}>
-                LogOut
-              </Nav.Link>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <nav className="fixed top-0 z-50 bg-white shadow-md w-full">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="#hero" className="block w-[12rem] xl:mr-8">
+          <img src={companylogo} width={190} height={40} alt="GetHired" />
+        </a>
+        <ul className="hidden lg:flex lg:mx-auto lg:bg-transparent">
+          <li className="mr-6">
+            <a
+              href="/about"
+              className="text-lg font-medium text-gray-600 transition-colors hover:text-blue-500"
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <a
+              href="/alljobs"
+              className="text-lg font-medium text-gray-600 transition-colors hover:text-blue-500"
+            >
+              Find all jobs
+            </a>
+          </li>
+        </ul>
+        {!user && (
+          <Button
+            className="hidden lg:flex"
+            href="/login"
+            variant="primary"
+            size="md"
+          >
+            Find/Post a job
+          </Button>
+        )}
+        {user && (
+          <Button
+            className="hidden lg:flex"
+            onClick={handleLogout}
+            variant="primary"
+            size="md"
+          >
+            Sign out
+          </Button>
+        )}
+        <button
+          className="lg:hidden flex justify-center w-8 h-8 bg-gray-200 rounded-full"
+          onClick={() => setOpenNavigation(!openNavigation)}
+        >
+          <svg
+            className="w-4 h-4 text-gray-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+      {openNavigation && (
+        <div className="lg:hidden bg-white shadow-md py-3">
+          <ul>
+            <li className="py-2">
+              <a
+                href="/about"
+                className="text-lg font-medium text-gray-600 transition-colors hover:text-blue-500"
+              >
+                About
+              </a>
+            </li>
+            <li className="py-2">
+              <a
+                href="/alljobs"
+                className="text-lg font-medium text-gray-600 transition-colors hover:text-blue-500"
+              >
+                Find all jobs
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
+    </nav>
   );
 };
 

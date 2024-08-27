@@ -3,7 +3,6 @@ import { useAuth } from "../context/AuthProvider";
 import companylogo from "../assets/images/companylogo.png";
 import Button from "./Buttons";
 import { useState } from "react";
-
 const NavBar = () => {
   const { user, signOut, loading } = useAuth();
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -29,7 +28,7 @@ const NavBar = () => {
   return (
     <nav className="fixed top-0 z-50 bg-white shadow-md w-full">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <a href="#hero" className="block w-[12rem] xl:mr-8">
+        <a href="/" className="block w-[12rem] xl:mr-8">
           <img src={companylogo} width={190} height={40} alt="GetHired" />
         </a>
         <ul className="hidden lg:flex lg:mx-auto lg:bg-transparent">
@@ -43,7 +42,7 @@ const NavBar = () => {
           </li>
           <li>
             <a
-              href="/alljobs"
+              href="/jobPostings"
               className="text-lg font-medium text-gray-600 transition-colors hover:text-blue-500"
             >
               Find all jobs
@@ -103,7 +102,7 @@ const NavBar = () => {
             </li>
             <li className="py-2">
               <a
-                href="/alljobs"
+                href="/jobPostings"
                 className="text-lg font-medium text-gray-600 transition-colors hover:text-blue-500"
               >
                 Find all jobs

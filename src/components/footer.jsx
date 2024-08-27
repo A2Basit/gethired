@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-600 text-white py-8">
+    <footer className="bg-blue-600 text-white py-8 mt-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap mx-4">
           {/* Quick Links Column */}

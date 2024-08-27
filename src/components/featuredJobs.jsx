@@ -41,22 +41,26 @@ const FeaturedJobs = () => {
   return (
     <div className="flex flex-col items-start justify-start w-max bg-white box-border ">
       <div className="text-left md:w-full px-8">
-        <h2 className="text-4xl font-bold text-gray-800 overflow-hidden">Featured Jobs</h2>
-        <Link to="/all-jobs" className="text-blue-500 hover:underline ">
+        <h2 className="text-4xl font-bold text-gray-800 overflow-hidden">
+          Featured Jobs
+        </h2>
+        <Link to="/jobPostings" className="text-blue-500 hover:underline ">
           All jobs
         </Link>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 ">
-          {jobs.map((job, index) => (
-            <div
-              key={index}
-              className="relative p-4 border-b-2 border-blue-500 rounded-lg shadow-md "
-            >
-              <h3 className="text-2xl font-bold mb-2 ">{job.title}</h3>
-              <p className="text-lg text-gray-600 mb-2 ">{job.company}</p>
-              <p className="text-gray-600 ">{job.description}</p>
-            </div>
-          ))}
-        </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 ">
+            
+            {jobs.map((job, index) => (
+              <div
+                key={index}
+                className="relative p-4 border-b-2 border-blue-500 rounded-lg shadow-md "
+              >
+                <h3 className="text-2xl font-bold mb-2 ">{job.title}</h3>
+                <p className="text-lg text-gray-600 mb-2 ">{job.company}</p>
+                <p className="text-gray-600 ">{job.description}</p>
+              </div>
+            ))}
+          </div>
         <div className="flex justify-between mt-6 ">
           <button
             onClick={handlePreviousPage}

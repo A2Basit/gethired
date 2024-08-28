@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase/config";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 const FeaturedJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -38,6 +39,10 @@ const FeaturedJobs = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  const handleCardClick = (id) => {
+    navigate(`/jobPostings/${id}`);
+  };
+
   return (
     <div className="flex flex-col items-start justify-start w-max bg-white box-border ">
       <div className="text-left md:w-full px-8">
@@ -53,7 +58,8 @@ const FeaturedJobs = () => {
             {jobs.map((job, index) => (
               <div
                 key={index}
-                className="relative p-4 border-b-2 border-blue-500 rounded-lg shadow-md "
+                className="relative p-4 border-b-2 border-blue-500 rounded-lg shadow-md hover:shadow-lg-2xl cursor-pointer"
+                onClick={() => handleCardClick(index + 1)}
               >
                 <h3 className="text-2xl font-bold mb-2 ">{job.title}</h3>
                 <p className="text-lg text-gray-600 mb-2 ">{job.company}</p>

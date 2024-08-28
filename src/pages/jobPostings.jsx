@@ -1,37 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import FilterOptions from '../components/FilterOptions';
 import JobCard from '../components/JobCard';
 import MainJobDescription from '../components/mainJobDescription';
+import { supabase } from '../../supabase/config';
+
 // Import other components here as you create them
 
 const JobPostings = () => {
-  const [jobs, setJobs] = useState([
-    // This is sample data, you would replace it with real data from your backend
-    {
-      id: 1,
-      title: 'Paid Web Developer/IT Intern',
-      company: 'Rankobiz',
-      location: 'Lahore',
-      salary: 'Rs 10,000 - Rs 15,000 a month',
-      description: 'Candidate should have a good understanding of front-end languages...',
-      fullDescription: 'The candidate should have a thorough understanding of front-end development including HTML, CSS, JavaScript, and related frameworks. Experience in developing responsive designs and working with REST APIs is a plus. Responsibilities include designing and implementing new features, optimizing existing code, and collaborating with the team.',
-      type: 'Full-time',
-      postedDate: 'Just posted',
-    },
-    // Add more job objects here
-  ]);
-
+  const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const {error, data} = await supabase.from('job_postings').select('*');
+        if (error) {
+          throw error;
+        }
+        setJobs(data);
+      }
+      catch (error) {
+        console.error('Error fetching jobs:', error.message);
+    }
+  }
+  fetchJobs();
+  }, []);
 
-  const handleSearch = (keywords, location) => {
-    console.log('Searching for:', keywords, location);
-    // Implement the logic to fetch jobs based on search criteria
+  const handleSearch = async (keywords, location) => {
+    try {
+      const { data, error } = await supabase
+        .from('job_postings')
+        .select('*')
+        .ilike('title', `%${keywords}%`)
+        .ilike('location', `%${location}%`);
+      if (error) throw error;
+      setJobs(data);
+    } catch (error) {
+      console.error('Error searching jobs:', error);
+    }
   };
 
-  const handleFilter = (filters) => {
-    console.log('Applying filters:', filters);
-    // Implement the logic to filter jobs based on the selected filters
+  const handleFilter = async (filters) => {
+    try {
+      let query = supabase.from('job_postings').select('*');
+      if (filters.type) {
+        query = query.eq('type', filters.type);
+      }
+      if (filters.salary) {
+        query = query.gte('salary', filters.salary);
+      }
+      const { data, error } = await query;
+      if (error) throw error;
+      setJobs(data);
+    } catch (error) {
+      console.error('Error filtering jobs:', error);
+    }
   };
 
   const handleJobClick = (jobId) => {

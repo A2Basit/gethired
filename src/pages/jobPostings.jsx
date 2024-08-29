@@ -5,8 +5,6 @@ import JobCard from '../components/JobCard';
 import MainJobDescription from '../components/mainJobDescription';
 import { supabase } from '../../supabase/config';
 
-// Import other components here as you create them
-
 const JobPostings = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);

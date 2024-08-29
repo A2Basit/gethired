@@ -8,6 +8,7 @@ import PasswordReset from "./pages/PasswordReset";
 import UpdatePassword from "./pages/UpdatePassword";
 import GuestRoute from "./components/GuestRoute";
 import JobPostings from "./pages/jobPostings";
+import EmployerJobPost from "./components/employerJobPost";
 const App = () => {
   return (
     <>
@@ -30,6 +31,7 @@ const App = () => {
                 <Route path="/PasswordReset" element={<PasswordReset />} />
                 <Route path="/UpdatePassword" element={<UpdatePassword />} />
                 <Route path="/jobPostings" element={<JobPostings />} />
+                <Route path="/employerJobPost" element={<EmployerJobPost />} />
                 <Route path="*" element={<h1>Not Found</h1>} />
               </Routes>
             </div>

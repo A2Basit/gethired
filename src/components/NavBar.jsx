@@ -59,6 +59,7 @@ const NavBar = () => {
             Find/Post a job
           </Button>
         )}
+    
         {user && (
           <Button
             className="hidden lg:flex"

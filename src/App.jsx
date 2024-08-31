@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap";
 import { Route, Routes } from "react-router-dom";
-import Register from "./pages/register";
+import Register from "./pages/Register";
 import Login from "./pages/login";
 import AuthRoute from "./components/AuthRoute";
 import Home from "./pages/Home";

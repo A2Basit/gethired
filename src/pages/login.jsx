@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
+import { supabase } from "../../supabase/config"; // Make sure to import supabase
 
 const Login = () => {
   const emailRef = useRef(null);
@@ -20,16 +21,44 @@ const Login = () => {
         setErrorMsg("Please fill in the fields");
         return;
       }
-      const {
-        data: { user, session },
-        error
-      } = await login(emailRef.current.value, passwordRef.current.value);
-      if (error) setErrorMsg(error.message);
-      if (user && session) navigate("/");
+
+      const { data: { user, session }, error } = await login(
+        emailRef.current.value,
+        passwordRef.current.value
+      );
+
+      if (error) {
+        setErrorMsg(error.message);
+        return;
+      }
+
+      if (user && session) {
+        // Fetch the user role from the profiles table
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("user_type")
+          .eq("id", user.id)
+          .single();
+
+        if (profileError || !profile) {
+          setErrorMsg("Error fetching user role");
+          return;
+        }
+
+        // Redirect based on user role
+        if (profile.user_type === "employer") {
+          navigate("/employerJobPost");
+        } else if (profile.user_type === "job_seeker") {
+          navigate("/jobPostings");
+        } else {
+          setErrorMsg("Invalid user role");
+        }
+      }
     } catch (error) {
       setErrorMsg("Email or Password Incorrect");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -38,7 +67,9 @@ const Login = () => {
         <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -48,7 +79,9 @@ const Login = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -58,15 +91,13 @@ const Login = () => {
             />
           </div>
           <div className="text-right mb-4">
-            <Link to="/PasswordReset" className="text-sm text-indigo-600 hover:text-indigo-500">Forgot Password?</Link>
+            <Link to="/PasswordReset" className="text-sm text-indigo-600 hover:text-indigo-500">
+              Forgot Password?
+            </Link>
           </div>
           {errorMsg && (
             <div className="mb-4">
-              <Alert
-                variant="danger"
-                onClose={() => setErrorMsg("")}
-                dismissible
-              >
+              <Alert variant="danger" onClose={() => setErrorMsg("")} dismissible>
                 {errorMsg}
               </Alert>
             </div>
@@ -87,6 +118,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

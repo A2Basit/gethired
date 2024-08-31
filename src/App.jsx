@@ -8,7 +8,7 @@ import PasswordReset from "./pages/PasswordReset";
 import UpdatePassword from "./pages/UpdatePassword";
 import GuestRoute from "./components/GuestRoute";
 import JobPostings from "./pages/jobPostings";
-import EmployerJobPost from "./components/employerJobPost";
+import EmployerJobPost from "./pages/employerJobPost";
 const App = () => {
   return (
     <>

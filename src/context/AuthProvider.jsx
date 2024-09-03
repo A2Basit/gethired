@@ -22,6 +22,7 @@ const updatePassword = async (updatedPassword) => {
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userRole,setUserRole] = useState(null);
   const [auth, setAuth] = useState(false);
   const [loading, setLoading] = useState(true); // Set loading to true initially
 

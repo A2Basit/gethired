@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
-import { supabase } from "../../supabase/config"; // Make sure to import supabase
+import { supabase } from "../../supabase/config";
+import AuthRoute from "../components/AuthRoute";
 
 const Login = () => {
   const emailRef = useRef(null);
@@ -47,7 +48,7 @@ const Login = () => {
 
         // Redirect based on user role
         if (profile.user_type === "employer") {
-          navigate("/employerJobPost");
+          navigate("/EmployerDashboard");
         } else if (profile.user_type === "job_seeker") {
           navigate("/jobPostings");
         } else {

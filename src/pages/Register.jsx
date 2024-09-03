@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
+import { Alert} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase/config";
 
@@ -20,8 +20,8 @@ const Register = () => {
     e.preventDefault();
 
     if (
-      !passwordRef.current?.value ||
       !emailRef.current?.value ||
+      !passwordRef.current?.value ||
       !confirmPasswordRef.current?.value ||
       !roleRef.current?.value
     ) {
@@ -43,30 +43,62 @@ const Register = () => {
       );
 
       if (error) {
-        setErrorMsg("Error in Creating Account");
-      } else if (data) {
-        // Create user profile in Supabase with selected role
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: data.user.id,
-          user_type: roleRef.current.value,
-          full_name: emailRef.current.value.split('@')[0], // Placeholder, you might want to add a full name field
-          email: emailRef.current.value,
-        });
-
-        if (profileError) {
-          setErrorMsg("Error creating profile");
-        } else {
-          setMsg(
-            "Registration Successful. Check your email to confirm your account"
+        if (error.status === 409) {
+          setErrorMsg(
+            "An account with this email already exists. Please log in."
           );
-
-          // Redirect based on role
-          if (roleRef.current.value === "employer") {
-            navigate("/employerJobPost");
-          } else if (roleRef.current.value === "job_seeker") {
-            navigate("/jobPostings");
-          }
+        } else {
+          setErrorMsg("Error in Creating Account");
         }
+        return;
+      }
+
+      // Create user profile in Supabase with selected role
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: data.user.id,
+        user_type: roleRef.current.value,
+        full_name: emailRef.current.value.split("@")[0],
+        email: emailRef.current.value,
+      });
+
+      if (profileError) {
+        setErrorMsg("Error in creating user profile");
+        return;
+      }
+
+      if (roleRef.current.value === "employer") {
+        const { error: employerError } = await supabase
+          .from("employer_profiles")
+          .insert({
+            id: data.user.id,
+            email: emailRef.current.value,
+          });
+        if (employerError) {
+          setErrorMsg("Error in creating employer profile");
+          return;
+        }
+      } else if (roleRef.current.value === "job_seeker") {
+        const { error: jobSeekerError } = await supabase
+          .from("job_seeker_profiles")
+          .insert({
+            id: data.user.id,
+            email: emailRef.current.value,
+          });
+        if (jobSeekerError) {
+          setErrorMsg("Error in creating job seeker profile");
+          return;
+        }
+      }
+
+      setMsg(
+        "Registration Successful. Check your email to confirm your account"
+      );
+
+      // Redirect based on role
+      if (roleRef.current.value === "employer") {
+        navigate("/EmployerDashboard");
+      } else if (roleRef.current.value === "job_seeker") {
+        navigate("/jobPostings");
       }
     } catch (error) {
       setErrorMsg("Error in Creating Account");

@@ -24,6 +24,7 @@ const EmployerJobPost = () => {
     }
 
     const dataToSubmit = {
+      employer_id: supabase.auth.user().id,
       title: formData.title,
       company: formData.company,
       description: formData.description,

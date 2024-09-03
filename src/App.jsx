@@ -9,32 +9,44 @@ import UpdatePassword from "./pages/UpdatePassword";
 import GuestRoute from "./components/GuestRoute";
 import JobPostings from "./pages/jobPostings";
 import EmployerJobPost from "./pages/employerJobPost";
+import EmployerDashboard from "./pages/EmployerDashboard";
+import { supabase } from "../supabase/config";
 const App = () => {
+  const user = supabase.auth.getUser();
   return (
     <>
       <div>
         <NavBar />
-        <div>
-          {/* Add padding-top to account for fixed NavBar */}
-
-            {/* Subtract NavBar height */}
-            <div>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route element={<AuthRoute />}>
-                  <Route path="/home" element={<Home />} />
-                </Route>
-                <Route element={<GuestRoute />}>
-                  <Route path="/Register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                </Route>
-                <Route path="/PasswordReset" element={<PasswordReset />} />
-                <Route path="/UpdatePassword" element={<UpdatePassword />} />
-                <Route path="/jobPostings" element={<JobPostings />} />
-                <Route path="/employerJobPost" element={<EmployerJobPost />} />
-                <Route path="*" element={<h1>Not Found</h1>} />
-              </Routes>
-            </div>
+        <div className="mt-16">
+          <div>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route element={<AuthRoute />}>
+                <Route path="/home" element={<Home />} />
+                {user === "employer" && (
+                  <>
+                    <Route
+                      path="/EmployerDashboard"
+                      element={<EmployerDashboard />}
+                    />
+                    <Route
+                      path="/employerJobPost"
+                      element={<EmployerJobPost />}
+                    />
+                  </>
+                )}
+              </Route>
+              <Route element={<GuestRoute />}>
+                <Route path="/Register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+              </Route>
+              <Route path="/PasswordReset" element={<PasswordReset />} />
+              <Route path="/UpdatePassword" element={<UpdatePassword />} />
+              <Route path="/jobPostings" element={<JobPostings />} />
+              <Route path="/employerJobPost" element={<EmployerJobPost />} />
+              <Route path="*" element={<h1>Not Found</h1>} />
+            </Routes>
+          </div>
         </div>
       </div>
     </>

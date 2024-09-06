@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../supabase/config";
 import { useNavigate } from "react-router-dom";
+import "./overflow.css";
 const Hero = () => {
   const [jobs, setJobs] = useState([]);
   const [message, setMessage] = useState("");
@@ -41,8 +42,8 @@ const Hero = () => {
   };
 
   return (
-    <div className="w-max">
-      <section className="flex flex-col items-center justify-center min-h-screen bg-white px-8 py-12 text-center md:flex-row md:text-left">
+    <div className="h-screen overflow-hidden">
+      <section className="flex flex-col items-center justify-center h-full bg-white px-4 py-12 text-center md:flex-row md:text-left md:px-8">
         <div className="md:w-1/2 md:pr-8">
           <h1 className="text-4xl font-bold mb-4">
             Find The <span className="text-pink-500">Best Jobs</span> Around

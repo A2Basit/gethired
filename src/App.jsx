@@ -23,18 +23,6 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route element={<AuthRoute />}>
                 <Route path="/home" element={<Home />} />
-                {user === "employer" && (
-                  <>
-                    <Route
-                      path="/EmployerDashboard"
-                      element={<EmployerDashboard />}
-                    />
-                    <Route
-                      path="/employerJobPost"
-                      element={<EmployerJobPost />}
-                    />
-                  </>
-                )}
               </Route>
               <Route element={<GuestRoute />}>
                 <Route path="/Register" element={<Register />} />

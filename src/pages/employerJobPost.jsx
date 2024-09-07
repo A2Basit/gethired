@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { supabase } from "../../supabase/config";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
+
 const EmployerJobPost = () => {
+  const {user} = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     company: "",
@@ -60,6 +62,7 @@ const EmployerJobPost = () => {
       alert("An error occurred while submitting the form.");
     }
   };
+  
   return (
     <form
       onSubmit={handleSubmit}

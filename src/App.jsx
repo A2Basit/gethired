@@ -11,6 +11,7 @@ import JobPostings from "./pages/jobPostings";
 import EmployerJobPost from "./pages/employerJobPost";
 import EmployerDashboard from "./pages/EmployerDashboard";
 import { supabase } from "../supabase/config";
+import ProtectedEmployerRoute from "./components/ProtectedEmployerRoute";
 const App = () => {
   const user = supabase.auth.getUser();
   return (
@@ -31,7 +32,13 @@ const App = () => {
               <Route path="/PasswordReset" element={<PasswordReset />} />
               <Route path="/UpdatePassword" element={<UpdatePassword />} />
               <Route path="/jobPostings" element={<JobPostings />} />
-              <Route path="/employerJobPost" element={<EmployerJobPost />} />
+              <Route element={<ProtectedEmployerRoute />}>
+                <Route path="/employerJobPost" element={<EmployerJobPost />} />
+                <Route
+                  path="/EmployerDashboard"
+                  element={<EmployerDashboard />}
+                />
+              </Route>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>

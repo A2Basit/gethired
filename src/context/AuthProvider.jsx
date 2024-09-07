@@ -1,3 +1,4 @@
+// src/context/AuthProvider.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../supabase/config";
 
@@ -22,7 +23,7 @@ const updatePassword = async (updatedPassword) => {
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [userRole,setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [auth, setAuth] = useState(false);
   const [loading, setLoading] = useState(true); // Set loading to true initially
 
@@ -32,6 +33,17 @@ const AuthProvider = ({ children }) => {
       const { user: currentUser } = data;
       setUser(currentUser ?? null);
       setAuth(currentUser ? true : false);
+
+      if (currentUser) {
+        // Fetch user role from your backend or Supabase
+        const { data: roleData } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", currentUser.id)
+          .single();
+        setUserRole(roleData?.role ?? null);
+      }
+
       setLoading(false); // Set loading to false once user is fetched
     };
     getUser();
@@ -42,9 +54,18 @@ const AuthProvider = ({ children }) => {
       } else if (event === "SIGNED_IN") {
         setUser(session.user);
         setAuth(true);
+
+        // Fetch user role from your backend or Supabase
+        const { data: roleData } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+        setUserRole(roleData?.role ?? null);
       } else if (event === "SIGNED_OUT") {
         setUser(null);
         setAuth(false);
+        setUserRole(null);
       }
     });
     return () => {
@@ -56,6 +77,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        userRole,
         auth,
         loading,
         login,

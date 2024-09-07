@@ -3,7 +3,6 @@ import { Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import { supabase } from "../../supabase/config";
-import AuthRoute from "../components/AuthRoute";
 
 const Login = () => {
   const emailRef = useRef(null);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import FilterOptions from '../components/FilterOptions';
 import JobCard from '../components/JobCard';
@@ -8,20 +8,20 @@ import { supabase } from '../../supabase/config';
 const JobPostings = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const {error, data} = await supabase.from('job_postings').select('*');
+        const { error, data } = await supabase.from('job_postings').select('*');
         if (error) {
           throw error;
         }
         setJobs(data);
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching jobs:', error.message);
-    }
-  }
-  fetchJobs();
+      }
+    };
+    fetchJobs();
   }, []);
 
   const handleSearch = async (keywords, location) => {
@@ -56,21 +56,21 @@ const JobPostings = () => {
   };
 
   const handleJobClick = (jobId) => {
-    const job = jobs.find(j => j.id === jobId);
+    const job = jobs.find((j) => j.id === jobId);
     setSelectedJob(job);
   };
 
   return (
-    <div>
+    <div className="p-4 mt-5">
       <SearchBar onSearch={handleSearch} />
       <FilterOptions onFilter={handleFilter} />
-      <div className="flex mt-4">
-        <div className="w-full sm:w-1/3 lg:w-2/5">
+      <div className="flex flex-wrap mt-4">
+        <div className="w-full sm:w-1/2 lg:w-2/5 mb-4 sm:mb-0">
           {jobs.map((job) => (
             <JobCard key={job.id} job={job} onClick={handleJobClick} />
           ))}
         </div>
-        <div className="w-full sm:w-2/3 lg:w-3/5">
+        <div className="w-full sm:w-1/2 lg:w-3/5">
           <MainJobDescription job={selectedJob} />
         </div>
       </div>

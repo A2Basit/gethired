@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import FilterOptions from '../components/FilterOptions';
 import JobCard from '../components/JobCard';
-import MainJobDescription from '../components/MainJobDescription';
+import MainJobDescription from '../components/mainJobDescription';
 import { supabase } from '../../supabase/config';
 
 const JobPostings = () => {
